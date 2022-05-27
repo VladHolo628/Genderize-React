@@ -1,0 +1,11 @@
+.text-input {
+    background-color: #FAD4D4;
+    color: #2E0249;
+    margin-bottom: 30px;
+    width: 500px;
+    height: 50px;
+    font-size: 23px;
+    text-align: center;
+    border: none;
+    border-radius: 20px;
+}
