@@ -7,6 +7,8 @@ import TextInput from './components/TextInput/TextInput';
 import SubmitButton from './components/Button/Button'
 import OutputBox from './components/OutputBox/OutputBox';
 
+const serverUrl ='https://api.genderize.io';
+
 
 
 
@@ -14,11 +16,17 @@ import OutputBox from './components/OutputBox/OutputBox';
 class FormComponent extends React.Component{
   constructor(props){
     super(props);
-    this.state = {name:"",gender:"",output:""}
+    this.state = {name:"",gender:"",output:"",isValid:"true"}
   }
  setOutput = () => {
   this.setState((state) => {
     return {output: `${state.name} - ${state.gender}`}
+  })
+ }
+
+ validate = () => {
+  this.setState((state) => {
+    return {isValid:state.name.length > 2 && state.gender !== null}
   })
  }
   changeHandler =(e) => {
@@ -27,26 +35,21 @@ class FormComponent extends React.Component{
     
   }
   submitHandler = (e) => {
-    const serverGenderUrl = 'https://api.genderize.io'
-    const urlGender = `${serverGenderUrl}?name=${this.state.name}`;
+    const urlGender = `${serverUrl}?name=${this.state.name}`;
     e.preventDefault();
     console.log(this.state)
-    if(this.state.name.length <= 2){
-      alert('Name can\'t be shorter than 2 symbols')
-      e.target.reset()
-      return
-    }
+
     fetch(urlGender)
     .then(response => response.json())
     .then((data) => {
       this.setState({gender:data.gender})
+      this.validate()
       this.setOutput()
-      // let result = `${data.name} - ${data.gender}`
-      // this.setState({output:result})
     })
    
   }
- 
+
+
 
   
   render() {
@@ -54,7 +57,7 @@ class FormComponent extends React.Component{
       <form  className="main-form" onSubmit={this.submitHandler}>
         <TextInput handler={this.changeHandler}/>
         <SubmitButton/>
-        <OutputBox text={this.state.output}/>
+        <OutputBox text={this.state.output} isValid={this.state.isValid}/>
       </form>
 
      )
