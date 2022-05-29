@@ -1,11 +1,11 @@
-import React from 'react'
-import { useState } from 'react';
-import ReactDOM from 'react-dom/client'
-import './index.css'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
 
 import TextInput from './components/TextInput/TextInput';
 import SubmitButton from './components/Button/Button'
 import OutputBox from './components/OutputBox/OutputBox';
+import { validationData } from './consts';
 
 const serverUrl ='https://api.genderize.io';
 
@@ -16,28 +16,31 @@ const serverUrl ='https://api.genderize.io';
 class FormComponent extends React.Component{
   constructor(props){
     super(props);
-    this.state = {name:"",gender:"",output:"",isValid:"true"}
+    this.state = {name:"",gender:"",output:"",isValidLength:true,isValidInput:true}
   }
  setOutput = () => {
   this.setState((state) => {
-    return {output: `${state.name} - ${state.gender}`}
+    return {output: `${state.name} - ${state.gender}`};
   })
- }
+ };
 
  validate = () => {
   this.setState((state) => {
-    return {isValid:state.name.length > 2 && state.gender !== null}
-  })
- }
+    return {isValidLength: state.name.length > validationData.minimalNameLength};
+  });
+
+  this.setState((state) => {
+    return {isValidInput: state.gender !== validationData.invalidGender};
+  });
+ };
   changeHandler =(e) => {
-    console.log(this.state)
-    this.setState({name:e.target.value})
+    this.setState({name:e.target.value});
     
-  }
+  };
+
   submitHandler = (e) => {
     const urlGender = `${serverUrl}?name=${this.state.name}`;
     e.preventDefault();
-    console.log(this.state)
 
     fetch(urlGender)
     .then(response => response.json())
@@ -57,7 +60,7 @@ class FormComponent extends React.Component{
       <form  className="main-form" onSubmit={this.submitHandler}>
         <TextInput handler={this.changeHandler}/>
         <SubmitButton/>
-        <OutputBox text={this.state.output} isValid={this.state.isValid}/>
+        <OutputBox text={this.state.output} isValidLength={this.state.isValidLength} isValidInput={this.state.isValidInput}/>
       </form>
 
      )

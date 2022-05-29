@@ -1,8 +1,12 @@
 import "./OutputBox.css"
+import { validationData } from "../../consts";
+
 
 const OutputBox = (props) => {
-    const isValid = props.isValid;
-    if(isValid) {
+    const isValidLength = props.isValidLength;
+    const isValidInput = props.isValidInput;
+    const errorMessage = isValidLength? validationData.invalidInputMessage:validationData.invalidLengthMessage;
+    if(isValidInput && isValidLength) {
         return (
             <div className="output-box">
                 <p className="output-box__text">{props.text}</p>
@@ -11,7 +15,7 @@ const OutputBox = (props) => {
     } else {
         return (
             <div className="output-box">
-                <p className="output-box__text">Invalid input</p>
+                <p className="output-box__text">{errorMessage}</p>
             </div>
         )
     }
