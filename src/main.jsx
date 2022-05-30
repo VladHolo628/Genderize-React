@@ -16,7 +16,12 @@ const serverUrl ='https://api.genderize.io';
 class FormComponent extends React.Component{
   constructor(props){
     super(props);
-    this.state = {name:"",gender:"",output:"",isValidLength:true,isValidInput:true}
+    this.state = {
+      name:"",
+      gender:"",
+      output:"",
+      isValidLength:true,
+      isValidInput:true}
   }
  setOutput = () => {
   this.setState((state) => {
@@ -58,7 +63,7 @@ class FormComponent extends React.Component{
   render() {
     return (
       <form  className="main-form" onSubmit={this.submitHandler}>
-        <TextInput handler={this.changeHandler}/>
+        <TextInput handler={this.changeHandler} value={this.state.name}/>
         <SubmitButton/>
         <OutputBox text={this.state.output} isValidLength={this.state.isValidLength} isValidInput={this.state.isValidInput}/>
       </form>
